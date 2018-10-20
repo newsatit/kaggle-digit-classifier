@@ -39,10 +39,10 @@ model.add(Dropout(0.1))
 model.add(Dense(units=10, activation='softmax'))
 
 # train the model
-# model.compile(optimizer='adam', 
-#               loss='sparse_categorical_crossentropy', 
-#               metrics=['accuracy'])
-# model.fit(x=x_train,y=y_train, epochs=1)
+model.compile(optimizer='adam', 
+              loss='sparse_categorical_crossentropy', 
+              metrics=['accuracy'])
+model.fit(x=x_train,y=y_train, epochs=10)
 
 #Load the testing data
 test_set = pd.read_csv('./data-sets/test.csv')
@@ -56,6 +56,16 @@ x_test = x_test/225
 
 # predict
 predictions = model.predict(np.array(x_test)).argmax(axis=1)
+
+# save predictions to csv
+predictions = predictions.reshape(num_test, 1)
+data = pd.DataFrame(predictions, columns=['Label'])
+data.index.names = ['ImageId']
+data.index += 1 
+data.to_csv('predictions.csv')
+
+
+
 
 
 
